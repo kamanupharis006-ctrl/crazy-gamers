@@ -1,35 +1,477 @@
-<div class="form-grid">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crazy Gamers</title>
 
-    <select id="player1">
-        <option value="Pharis">Pharis</option>
-        <option value="Alvin">Alvin</option>
-        <option value="Njoga">Njoga</option>
-    </select>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <input
-        type="number"
-        id="score1"
-        min="0"
-        value="0"
-        placeholder="Score"
-    >
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+}
 
-    <select id="player2">
-        <option value="Alvin">Alvin</option>
-        <option value="Pharis">Pharis</option>
-        <option value="Njoga">Njoga</option>
-    </select>
+header {
+    background: #16a34a;
+    padding: 30px 20px;
+    text-align: center;
+}
 
-    <div></div>
+header h1 {
+    margin: 0;
+    font-size: 38px;
+}
 
-    <div style="text-align:center;">VS</div>
+header p {
+    margin: 10px 0 0;
+}
 
-    <input
-        type="number"
-        id="score2"
-        min="0"
-        value="0"
-        placeholder="Score"
-    >
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 22px;
+    margin: 20px 0;
+    border-radius: 15px;
+}
+
+.players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.player {
+    background: #334155;
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+.player h3 {
+    margin: 5px 0;
+    color: #4ade80;
+}
+
+.match {
+    display: grid;
+    grid-template-columns: 1fr 80px 40px 80px 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #16a34a;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #15803d;
+}
+
+.clear {
+    background: #dc2626;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid #475569;
+}
+
+th {
+    background: #16a34a;
+}
+
+.result {
+    background: #334155;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #94a3b8;
+}
+
+@media (max-width: 650px) {
+    .match {
+        grid-template-columns: 1fr 60px;
+    }
+
+    .vs {
+        display: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎮 CRAZY GAMERS</h1>
+    <p>eFootball Tournament Hub</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>👥 Current Players</h2>
+
+        <div class="players">
+
+            <div class="player">
+                <h3>Pharis</h3>
+                <p>eFootball Player</p>
+            </div>
+
+            <div class="player">
+                <h3>Alvin</h3>
+                <p>eFootball Player</p>
+            </div>
+
+            <div class="player">
+                <h3>Njoga</h3>
+                <p>eFootball Player</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="card">
+
+        <h2>⚽ Record Match Result</h2>
+
+        <div class="match">
+
+            <select id="player1">
+                <option value="Pharis">Pharis</option>
+                <option value="Alvin">Alvin</option>
+                <option value="Njoga">Njoga</option>
+            </select>
+
+            <input
+                type="number"
+                id="score1"
+                min="0"
+                value="0"
+            >
+
+            <div class="vs">VS</div>
+
+            <input
+                type="number"
+                id="score2"
+                min="0"
+                value="0"
+            >
+
+            <select id="player2">
+                <option value="Alvin">Alvin</option>
+                <option value="Pharis">Pharis</option>
+                <option value="Njoga">Njoga</option>
+            </select>
+
+        </div>
+
+        <button onclick="addResult()">
+            ➕ Add Match Result
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🏆 Tournament Standings</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Played</th>
+                    <th>Wins</th>
+                    <th>Draws</th>
+                    <th>Losses</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+
+            <tbody id="standings"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>📋 Latest Results</h2>
+
+        <div id="results"></div>
+
+        <button class="clear" onclick="clearResults()">
+            🗑️ Clear All Results
+        </button>
+
+    </div>
 
 </div>
+
+
+<footer>
+    © 2026 Crazy Gamers | eFootball Tournament
+</footer>
+
+
+<script>
+
+const players = ["Pharis", "Alvin", "Njoga"];
+
+let matches = JSON.parse(
+    localStorage.getItem("crazyGamersMatches")
+) || [];
+
+
+function addResult() {
+
+    const player1 =
+        document.getElementById("player1").value;
+
+    const player2 =
+        document.getElementById("player2").value;
+
+    const score1 =
+        parseInt(document.getElementById("score1").value);
+
+    const score2 =
+        parseInt(document.getElementById("score2").value);
+
+
+    if (player1 === player2) {
+        alert("A player cannot play against themselves.");
+        return;
+    }
+
+
+    if (
+        isNaN(score1) ||
+        isNaN(score2) ||
+        score1 < 0 ||
+        score2 < 0
+    ) {
+        alert("Please enter valid scores.");
+        return;
+    }
+
+
+    matches.push({
+        player1: player1,
+        player2: player2,
+        score1: score1,
+        score2: score2
+    });
+
+
+    localStorage.setItem(
+        "crazyGamersMatches",
+        JSON.stringify(matches)
+    );
+
+
+    document.getElementById("score1").value = 0;
+    document.getElementById("score2").value = 0;
+
+
+    updatePage();
+}
+
+
+function updatePage() {
+    updateStandings();
+    updateResults();
+}
+
+
+function updateStandings() {
+
+    let table = {};
+
+    players.forEach(player => {
+
+        table[player] = {
+            played: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+            points: 0
+        };
+
+    });
+
+
+    matches.forEach(match => {
+
+        const p1 = table[match.player1];
+        const p2 = table[match.player2];
+
+        p1.played++;
+        p2.played++;
+
+
+        if (match.score1 > match.score2) {
+
+            p1.wins++;
+            p2.losses++;
+            p1.points += 3;
+
+        } else if (match.score1 < match.score2) {
+
+            p2.wins++;
+            p1.losses++;
+            p2.points += 3;
+
+        } else {
+
+            p1.draws++;
+            p2.draws++;
+
+            p1.points++;
+            p2.points++;
+        }
+
+    });
+
+
+    const sortedPlayers = [...players].sort(
+        (a, b) => table[b].points - table[a].points
+    );
+
+
+    let html = "";
+
+
+    sortedPlayers.forEach(player => {
+
+        const p = table[player];
+
+        html += `
+        <tr>
+            <td><strong>${player}</strong></td>
+            <td>${p.played}</td>
+            <td>${p.wins}</td>
+            <td>${p.draws}</td>
+            <td>${p.losses}</td>
+            <td><strong>${p.points}</strong></td>
+        </tr>
+        `;
+
+    });
+
+
+    document.getElementById("standings").innerHTML = html;
+}
+
+
+function updateResults() {
+
+    const container =
+        document.getElementById("results");
+
+
+    if (matches.length === 0) {
+
+        container.innerHTML =
+            "<p>No matches recorded yet.</p>";
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    matches.slice().reverse().forEach(match => {
+
+        html += `
+        <div class="result">
+            ⚽ <strong>
+            ${match.player1}
+            ${match.score1}
+            -
+            ${match.score2}
+            ${match.player2}
+            </strong>
+        </div>
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+}
+
+
+function clearResults() {
+
+    if (
+        confirm(
+            "Are you sure you want to delete all tournament results?"
+        )
+    ) {
+
+        matches = [];
+
+        localStorage.removeItem(
+            "crazyGamersMatches"
+        );
+
+        updatePage();
+    }
+}
+
+
+updatePage();
+
+</script>
+
+</body>
+</html>
